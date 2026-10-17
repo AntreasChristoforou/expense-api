@@ -26,7 +26,7 @@ app.get("/api/health", (req,res) =>{
 } );
 
 app.get("/api/expenses", (req,res) =>{
-    res.json({expenses});
+    res.json(expenses);
 } );
 
 
