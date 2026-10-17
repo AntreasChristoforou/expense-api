@@ -28,9 +28,17 @@ app.get("/api/health", (req,res) =>{
     res.json({ok: true});
 } );
 
-app.get("/api/expenses", (req,res) =>{
-    res.json(expenses);
-} );
+app.get("/api/expenses", (req, res) => {
+  const category = req.query.category;
+
+  if (typeof category === "string") {
+    
+    return res.json(expenses.filter(e => e.category === category));
+  }
+
+  res.json(expenses);  
+});
+
 
 app.get("/api/expenses/:id", (req,res) =>{
     const id = Number(req.params.id);
@@ -95,6 +103,8 @@ app.delete("/api/expenses/:id", (req,res)=>{
     expenses = expenses.filter(e => e.id !== id);
     res.status(204).send();
 })
+
+
 
 app.listen(PORT, ()=>{
     console.log(`Server running on http://localhost:${PORT}`);
