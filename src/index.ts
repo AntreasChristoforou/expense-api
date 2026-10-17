@@ -82,6 +82,20 @@ app.patch("/api/expenses/:id" , (req,res) =>{
    
 });
 
+app.delete("/api/expenses/:id", (req,res)=>{
+    const id = Number(req.params.id);
+
+    if(Number.isNaN(id)){
+        return res.status(400).json({ error:"Id must be a number" });
+    }
+    if(!expenses.find(e => e.id === id)){
+        return res.status(404).json({error: "Expense not found"});
+    }
+
+    expenses = expenses.filter(e => e.id !== id);
+    res.status(204).send();
+})
+
 app.listen(PORT, ()=>{
     console.log(`Server running on http://localhost:${PORT}`);
 });
