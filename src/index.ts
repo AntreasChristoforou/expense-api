@@ -31,6 +31,8 @@ app.get("/api/health", (req,res) =>{
 app.get("/api/expenses", (req, res) => {
   const category = req.query.category;
 
+  
+
   if (typeof category === "string") {
     
     return res.json(expenses.filter(e => e.category === category));
@@ -39,9 +41,20 @@ app.get("/api/expenses", (req, res) => {
   res.json(expenses);  
 });
 
+app.get("/api/expenses/totals", (req,res) => {
+
+    const totals = expenses.reduce((acc, e) => {
+    acc[e.category] = (acc[e.category] ?? 0) + e.amount;
+    return acc;
+    }, {} as Record<string, number>);
+    res.json(totals);
+});
+
 
 app.get("/api/expenses/:id", (req,res) =>{
     const id = Number(req.params.id);
+
+
 
     if(Number.isNaN(id)){
         return res.status(400).json({error: "Id must be a number"});
